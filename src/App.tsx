@@ -8,6 +8,7 @@ import NotFoundPage from "./shared/pages/NotFoundPage";
 import { ReactQueryProvider } from "./shared/components/ReactQueryProvider";
 import { Toaster } from "sonner";
 import GlobalLoadingProvider from "./shared/components/GlobalLoading";
+import LoginPage from "./features/auth/pages/LoginPage";
 
 
 const router = createBrowserRouter([
@@ -19,38 +20,38 @@ const router = createBrowserRouter([
         path: ROUTES.HOME.url,
         element: <LayoutMain />,
         children: [
-          {
-            path: ROUTES.USER_CREATE.url,
-            element: <UserCreatePage />
-          },
-          {
-            path: ROUTES.USER_EDIT.url,
-            element: <UserEditPage />
-          },
-          {
-            path: ROUTES.USER_VIEW.url,
-            element: <UserViewPage />
-          },
-          {
-            path: ROUTES.PERMISSIONS.url,
-            element: <PermissionsPage />
-          },
-          {
-            path: ROUTES.ROLES.url,
-            element: <RolesPage />
-          },
-          {
-            path: ROUTES.ROLE_EDIT.url,
-            element: <RoleEditPage />
-          },
-          {
-            path: ROUTES.ROLE_CREATE.url,
-            element: <RoleCreatePage />
-          },
-          {
-            path: ROUTES.AUDIT_LOGS.url,
-            element: <AuditLogsPage />
-          }
+          // {
+          //   path: ROUTES.USER_CREATE.url,
+          //   element: <UserCreatePage />
+          // },
+          // {
+          //   path: ROUTES.USER_EDIT.url,
+          //   element: <UserEditPage />
+          // },
+          // {
+          //   path: ROUTES.USER_VIEW.url,
+          //   element: <UserViewPage />
+          // },
+          // {
+          //   path: ROUTES.PERMISSIONS.url,
+          //   element: <PermissionsPage />
+          // },
+          // {
+          //   path: ROUTES.ROLES.url,
+          //   element: <RolesPage />
+          // },
+          // {
+          //   path: ROUTES.ROLE_EDIT.url,
+          //   element: <RoleEditPage />
+          // },
+          // {
+          //   path: ROUTES.ROLE_CREATE.url,
+          //   element: <RoleCreatePage />
+          // },
+          // {
+          //   path: ROUTES.AUDIT_LOGS.url,
+          //   element: <AuditLogsPage />
+          // }
         ]
       }
     ]
@@ -77,9 +78,7 @@ export default function App() {
   return (
     <ReactQueryProvider>
       <GlobalLoadingProvider>
-        <SocketProvider>
           <RouterProvider router={router} />
-        </SocketProvider>
       </GlobalLoadingProvider>
       <Toaster position='top-right' richColors theme='light' />
     </ReactQueryProvider>
