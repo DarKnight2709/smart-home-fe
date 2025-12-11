@@ -9,11 +9,11 @@ const ROUTES = {
     url: '/login'
   },
   USERS: {
-    title: 'Người dùng',
+    title: 'Danh sách người dùng',
     url: '/users'
   },
   USER_CREATE: {
-    title: 'Thêm thêm người dùng',
+    title: 'Thêm người dùng',
     url: '/users/create'
   },
   USER_EDIT: {

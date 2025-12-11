@@ -19,6 +19,7 @@ function validateEnv(): Env {
     VITE_API_URL: import.meta.env.VITE_API_URL,
     VITE_IMAGE_URL: import.meta.env.VITE_IMAGE_URL,
     VITE_ENV: import.meta.env.VITE_ENV,
+    VITE_SOCKET_URL: import.meta.env.VITE_SOCKET_URL
   }
 
   try {

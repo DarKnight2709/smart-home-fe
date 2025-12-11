@@ -20,7 +20,7 @@ import { HoverMarquee } from './marquee/HoverMarquee'
 
 // item: nav-main
 // permissions: các quyền của người dùng.
-export function NavMain({ items, permissions }: { items: NavItem[]; permissions: PermissionType[] }) {
+export function NavMain({ items, permissions, roles }: { items: NavItem[]; permissions: PermissionType[], roles: any[] }) {
   // lấy url hiện tại
   const location = useLocation()
 
@@ -56,41 +56,49 @@ export function NavMain({ items, permissions }: { items: NavItem[]; permissions:
 
   // lọc menu dựa theo quyền
   // dùng useMemo để tránh tính toàn lại mỗi lần render
+
   const filteredItems = useMemo(() => {
+    // Nếu có system role thì trả về tất cả, không lọc
+    const isSystem = roles?.some((role) => role.isSystemRole);
+    if (isSystem) {
+      return items;
+    }
+  
+    // Ngược lại: lọc theo permission
     return items
       .filter((item) => {
-        // Nếu item có sub-items, kiểm tra xem có ít nhất 1 sub-item được phép truy cập
+        // Nếu có group sub-items
         if (item.items && item.items.length > 0) {
-          // nhóm có sub-item -> chỉ giữ nếu còn ít nhất 1 sub-item được phép
           const allowedSubItems = item.items.filter((subItem) => {
-            if (!subItem.requiredPermission) return true
-            return hasPermission(permissions, subItem.requiredPermission)
-          })
-          return allowedSubItems.length > 0
+            if (!subItem.requiredPermission) return true;
+            return hasPermission(permissions, subItem.requiredPermission);
+          });
+  
+          return allowedSubItems.length > 0;
         }
-
-        // Nếu là single item, kiểm tra permission
+  
+        // Nếu là single item và có requiredPermission
         if (item.requiredPermission) {
-          return hasPermission(permissions, item.requiredPermission)
+          return hasPermission(permissions, item.requiredPermission);
         }
-
-        // Nếu không có requiredPermission, cho phép hiển thị
-        return true
+  
+        // Mặc định được hiển thị
+        return true;
       })
       .map((item) => {
-        // Nếu có sub-items, filter sub-items theo permission
         if (item.items && item.items.length > 0) {
           return {
             ...item,
             items: item.items.filter((subItem) => {
-              if (!subItem.requiredPermission) return true
-              return hasPermission(permissions, subItem.requiredPermission)
-            })
-          }
+              if (!subItem.requiredPermission) return true;
+              return hasPermission(permissions, subItem.requiredPermission);
+            }),
+          };
         }
-        return item
-      })
-  }, [items, permissions])
+        return item;
+      });
+  }, [items, permissions, roles]);
+  
 
   return (
     <SidebarGroup>

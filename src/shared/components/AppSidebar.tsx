@@ -18,6 +18,7 @@ import navMain from '../lib/nav-main'
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: selfInfo, isLoading, isPending } = useMeQuery()
   const permissions = selfInfo?.data?.roles.flatMap((role) => role.permissions) || []
+  const roles = selfInfo?.data?.roles || [];
 
   if (isLoading || isPending) {
     return null
@@ -33,7 +34,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
             >
               <div className='flex aspect-square size-8 items-center justify-center rounded-lg'>
-                <img src='/actvn_big_icon.png' className='w-full h-full' alt='logo' />
+                <img src='/smarthome.jpg' className='w-full h-full' alt='logo' />
               </div>
               <div className='grid flex-1 text-left text-sm leading-tight'>
                 <span className='truncate font-medium'>Smart home</span>
@@ -43,7 +44,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className='style-scrollbar'>
-        <NavMain items={navMain} permissions={permissions} />
+        <NavMain items={navMain} permissions={permissions} roles={roles} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={selfInfo?.data} />

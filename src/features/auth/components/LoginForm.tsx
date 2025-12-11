@@ -54,8 +54,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
       <CardHeader className='space-y-1'>
         <div className='flex flex-col items-center space-y-4'>
           <div className='flex items-center gap-3'>
-            <img src='/logo.webp' alt='ACTVN Logo' className='h-16 w-16 object-contain' />
-            <img src='/dongchu_banner.png' alt='Dongchu Banner' className='h-12 object-contain' />
+            <img src='/smarthome.jpg' alt='logo' className='h-16 w-16 object-contain' />
           </div>
         </div>
         <CardTitle className='text-2xl text-center hidden'>Đăng nhập</CardTitle>
