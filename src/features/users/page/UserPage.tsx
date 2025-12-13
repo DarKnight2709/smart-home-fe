@@ -5,9 +5,11 @@ import { useNavigate } from "react-router";
 import { Button } from "@/shared/components/ui/button";
 import { useGetUsersQuery, useDeleteUserMutation } from "../api/UserService";
 import ROUTES from "@/shared/lib/routes";
+import { withPermissionGuard } from "@/shared/components/WithPermissionGuard";
+import { PERMISSIONS } from "@/shared/constants/permissions";
+import {ComponentWithPermissionGuard} from "@/shared/components/ComponentWithPermissionGuard";
 
-
-const UserPage = () => {
+const UserPageComponent = () => {
   const navigate = useNavigate();
   const { data, isLoading, isFetching } = useGetUsersQuery();
   const { mutateAsync: deleteUser } = useDeleteUserMutation();
@@ -44,7 +46,6 @@ const UserPage = () => {
     return <p className="text-center text-gray-500">Không có user nào.</p>;
   }
 
-  
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-4">
@@ -77,24 +78,34 @@ const UserPage = () => {
                 <td className="p-2 border">{user.username}</td>
                 <td className="p-2 border">{user.fullName}</td>
                 <td className="p-2 border text-center">
-  {user.gender === "MALE" ? "Nam" : "Nữ"}
-</td>                <td className="p-2 border">{user.email || "-"}</td>
+                  {user.gender === "MALE" ? "Nam" : "Nữ"}
+                </td>{" "}
+                <td className="p-2 border">{user.email || "-"}</td>
                 <td className="p-2 border">{user.phone || "-"}</td>
-                <td className="p-2 border">{user.roles.map((r) => r.name).join(", ")}</td>
+                <td className="p-2 border">
+                  {user.roles.map((r) => r.name).join(", ")}
+                </td>
                 <td className="p-2 border">{formatDate(user.createdAt)}</td>
                 <td className="p-2 border">
                   <div className="flex items-center gap-2 justify-center">
+                    <ComponentWithPermissionGuard permission={PERMISSIONS.USERS.VIEW}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() =>
+                          navigate(ROUTES.USER_VIEW.getPath(user.id))
+                        }
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                    </ComponentWithPermissionGuard>
+
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => navigate(ROUTES.USER_VIEW.getPath(user.id))}
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => navigate(ROUTES.USER_EDIT.getPath(user.id))}
+                      onClick={() =>
+                        navigate(ROUTES.USER_EDIT.getPath(user.id))
+                      }
                     >
                       <Pencil className="w-4 h-4" />
                     </Button>
@@ -120,6 +131,9 @@ const UserPage = () => {
       </div>
     </div>
   );
-}
+};
 
-export default UserPage;
+export const UserPage = withPermissionGuard(
+  UserPageComponent,
+  PERMISSIONS.USERS.LIST
+);

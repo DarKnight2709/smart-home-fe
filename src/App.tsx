@@ -9,10 +9,10 @@ import { ReactQueryProvider } from "./shared/components/ReactQueryProvider";
 import { Toaster } from "sonner";
 import GlobalLoadingProvider from "./shared/components/GlobalLoading";
 import LoginPage from "./features/auth/pages/LoginPage";
-import UserPage from "./features/users/page/UserPage";
+import {UserPage} from "./features/users/page/UserPage";
 import UserCreatePage from "./features/users/page/UserCreatePage";
 import UserEditPage from "./features/users/page/UserEditPage";
-import UserViewPage from "./features/users/page/UserViewPage";
+import {UserViewPage} from "./features/users/page/UserViewPage";
 
 const router = createBrowserRouter([
   {

@@ -32,6 +32,7 @@ export const useMeQuery = () => {
     queryFn: async () => {
       try {
         const response = await api.get<MeResponse>(API_ROUTES.AUTH.ME)
+        console.log(response.data);
         return response
       } catch (error: any) {
         return null

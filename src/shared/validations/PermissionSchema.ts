@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { BaseEntityDTO } from './CommonSchema'
 
 
-export const PermissionSchema = BaseEntityDTO.extend({
+export const PermissionSchema = z.object({
+  id: z.string(),
   name: z.string(),
   description: z.string(),
   path: z.string(),

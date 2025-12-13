@@ -53,27 +53,13 @@ export const MeResponseSchema = z
     id: z.string(),
     username: z.string(),
     fullName: z.string(),
-    facultyDepartmentId: z.string(),
-    code: z.string(),
-    facultyDepartment: z.object({
-      id: z.string(),
-      name: z.string(),
-      code: z.string(),
-      isFaculty: z.boolean()
-    }),
     roles: z.array(
       z.object({
         id: z.string(),
         name: z.string(),
         isActive: z.boolean(),
         isSystemRole: z.boolean(),
-        scopeFacultyDepartment: z
-          .object({
-            id: z.string(),
-            name: z.string()
-          })
-          .nullable()
-          .default(null),
+        description: z.string(),
         permissions: z.array(PermissionSchema)
       })
     )

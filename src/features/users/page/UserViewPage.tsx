@@ -4,8 +4,9 @@ import {
 } from "../api/UserService";
 import { FormPageLayout } from "../../../shared/components/FormPageLayout";
 import { UserForm } from "../components/UserForm";
-
-const UserViewPage = () => {
+import { PERMISSIONS } from "@/shared/constants/permissions";
+import { withPermissionGuard } from "@/shared/components/WithPermissionGuard";
+const UserViewPageComponent = () => {
   // lấy id người dùng đó
   const { id } = useParams();
   const { data: userResponse, isLoading } = useGetUserDetailQuery(id);  
@@ -30,5 +31,7 @@ const UserViewPage = () => {
 };
 
 // Apply permission guard
-// export const UserCreatePage = withPermissionGuard(UserCreatePageComponent, PERMISSIONS.USERS.CREATE)
-export default UserViewPage;
+export const UserViewPage = withPermissionGuard(
+  UserViewPageComponent,
+  PERMISSIONS.USERS.VIEW
+)
