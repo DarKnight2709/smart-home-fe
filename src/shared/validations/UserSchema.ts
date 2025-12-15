@@ -31,7 +31,7 @@ export const CreateUserSchema = z
       .min(1, 'Mật khẩu không được để trống')
       .max(255, 'Mật khẩu không được quá 255 ký tự')
       .optional(),
-    gender: z.enum(Gender, { message: 'Giới tính không hợp lệ' }).optional(),
+    gender: z.enum(Gender, { message: 'Giới tính không hợp lệ' }),
     dateOfBirth: z.coerce.date().optional(),
     phone: z.string().max(20, 'Số điện thoại không được quá 20 ký tự').optional(),
     email: z.string().optional(),
@@ -41,8 +41,7 @@ export const CreateUserSchema = z
   .strict()
   .strip()
 
-export const UpdateUserSchema = CreateUserSchema
-
+  export const UpdateUserSchema = CreateUserSchema
 
 export const UsersResponseSchema = z.object({
   users: z.array(UserSchema),

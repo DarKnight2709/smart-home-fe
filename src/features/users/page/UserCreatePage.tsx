@@ -4,9 +4,11 @@ import ROUTES from "@/shared/lib/routes"
 import type { CreateUser } from "@/shared/validations/UserSchema"
 import { FormPageLayout } from "../../../shared/components/FormPageLayout"
 import { UserForm } from "../components/UserForm"
+import { withPermissionGuard } from "@/shared/components/WithPermissionGuard"
+import { PERMISSIONS } from "@/shared/constants/permissions"
 
 
-const UserCreatePage = () => {
+const UserCreatePageComponent = () => {
   const { mutateAsync, isPending} = useCreateUserMutation()
   const navigate = useNavigate()
 
@@ -22,6 +24,7 @@ const UserCreatePage = () => {
   )
 }
 
-// Apply permission guard
-// export const UserCreatePage = withPermissionGuard(UserCreatePageComponent, PERMISSIONS.USERS.CREATE)
-export default UserCreatePage
+export const UserCreatePage = withPermissionGuard(
+  UserCreatePageComponent,
+  PERMISSIONS.USERS.CREATE
+);

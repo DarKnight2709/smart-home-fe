@@ -10,9 +10,13 @@ import { Toaster } from "sonner";
 import GlobalLoadingProvider from "./shared/components/GlobalLoading";
 import LoginPage from "./features/auth/pages/LoginPage";
 import {UserPage} from "./features/users/page/UserPage";
-import UserCreatePage from "./features/users/page/UserCreatePage";
-import UserEditPage from "./features/users/page/UserEditPage";
 import {UserViewPage} from "./features/users/page/UserViewPage";
+import {RolePage} from "./features/roles/pages/RolePage";
+import { RoleViewPage } from "./features/roles/pages/RoleViewPage";
+import { RoleEditPage } from "./features/roles/pages/RoleEditPage";
+import { UserEditPage } from "./features/users/page/UserEditPage";
+import { UserCreatePage } from "./features/users/page/UserCreatePage";
+import { RoleCreatePage } from "./features/roles/pages/RoleCreatePage";
 
 const router = createBrowserRouter([
   {
@@ -43,18 +47,23 @@ const router = createBrowserRouter([
           //   path: ROUTES.PERMISSIONS.url,
           //   element: <PermissionsPage />
           // },
-          // {
-          //   path: ROUTES.ROLES.url,
-          //   element: <RolesPage />
-          // },
-          // {
-          //   path: ROUTES.ROLE_EDIT.url,
-          //   element: <RoleEditPage />
-          // },
-          // {
-          //   path: ROUTES.ROLE_CREATE.url,
-          //   element: <RoleCreatePage />
-          // },
+          {
+            path: ROUTES.ROLES.url,
+            element: <RolePage />
+          },
+          {
+            path: ROUTES.ROLE_VIEW.url,
+            element: <RoleViewPage />
+          },
+
+          {
+            path: ROUTES.ROLE_EDIT.url,
+            element: <RoleEditPage />
+          },
+          {
+            path: ROUTES.ROLE_CREATE.url,
+            element: <RoleCreatePage />
+          },
           // {
           //   path: ROUTES.AUDIT_LOGS.url,
           //   element: <AuditLogsPage />

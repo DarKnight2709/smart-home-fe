@@ -6,8 +6,10 @@ import {
 import type { UpdateUser } from "@/shared/validations/UserSchema";
 import { FormPageLayout } from "../../../shared/components/FormPageLayout";
 import { UserForm } from "../components/UserForm";
+import { withPermissionGuard } from "@/shared/components/WithPermissionGuard";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
-const UserCreatePage = () => {
+const UserEditPageComponent = () => {
   // lấy id người dùng đó
   const { id } = useParams();
   const { data: userResponse, isLoading } = useGetUserDetailQuery(id);
@@ -43,6 +45,8 @@ const UserCreatePage = () => {
   );
 };
 
-// Apply permission guard
-// export const UserCreatePage = withPermissionGuard(UserCreatePageComponent, PERMISSIONS.USERS.CREATE)
-export default UserCreatePage;
+
+export const UserEditPage = withPermissionGuard(
+  UserEditPageComponent,
+  PERMISSIONS.USERS.UPDATE
+);

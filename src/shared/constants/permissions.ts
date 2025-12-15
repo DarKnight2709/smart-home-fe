@@ -7,8 +7,8 @@ export const PERMISSIONS = {
   USERS: {
     LIST: { method: 'GET', path: '/users' } as PermissionRequirement,
     CREATE: { method: 'POST', path: '/users' } as PermissionRequirement,
-    UPDATE: { method: 'PUT', path: '/users/:id' } as PermissionRequirement,
-    DELETE: { method: 'DELETE', path: '/users/:id/hard' } as PermissionRequirement,
+    UPDATE: { method: 'PATCH', path: '/users/:id' } as PermissionRequirement,
+    DELETE: { method: 'DELETE', path: '/users/:id' } as PermissionRequirement,
     VIEW: { method: 'GET', path: '/users/:id' } as PermissionRequirement
   },
 
@@ -16,7 +16,7 @@ export const PERMISSIONS = {
   ROLES: {
     LIST: { method: 'GET', path: '/roles' } as PermissionRequirement,
     CREATE: { method: 'POST', path: '/roles' } as PermissionRequirement,
-    UPDATE: { method: 'PUT', path: '/roles/:id' } as PermissionRequirement,
+    UPDATE: { method: 'PATCH', path: '/roles/:id' } as PermissionRequirement,
     DELETE: { method: 'DELETE', path: '/roles/:id' } as PermissionRequirement,
     VIEW: { method: 'GET', path: '/roles/:id' } as PermissionRequirement
   },
@@ -24,6 +24,6 @@ export const PERMISSIONS = {
   // Permissions
   PERMISSIONS: {
     MODULES: { method: 'GET', path: '/permissions/module/:module' } as PermissionRequirement,
-    UPDATE: { method: 'PUT', path: '/permissions/:id' } as PermissionRequirement
+    UPDATE: { method: 'PATCH', path: '/permissions/:id' } as PermissionRequirement
   },
 }

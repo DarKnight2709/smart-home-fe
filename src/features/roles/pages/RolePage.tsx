@@ -3,32 +3,26 @@ import { Eye, Loader2, Pencil, Plus, Trash } from "lucide-react";
 import { useNavigate } from "react-router";
 
 import { Button } from "@/shared/components/ui/button";
-import { useGetUsersQuery, useDeleteUserMutation } from "../api/UserService";
 import ROUTES from "@/shared/lib/routes";
 import { withPermissionGuard } from "@/shared/components/WithPermissionGuard";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ComponentWithPermissionGuard } from "@/shared/components/ComponentWithPermissionGuard";
+import { useDeleteRoleMutation, useGetRolesQuery } from "../api/RoleService";
 
-const UserPageComponent = () => {
+const RolePageComponent = () => {
   const navigate = useNavigate();
-  const { data, isLoading, isFetching } = useGetUsersQuery();
-  const { mutateAsync: deleteUser } = useDeleteUserMutation();
+  const { data, isLoading, isFetching } = useGetRolesQuery();
+  const { mutateAsync: deleteRole } = useDeleteRoleMutation();
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const users = data?.users || [];
-
-  const formatDate = (value?: Date | string) => {
-    if (!value) return "---";
-    const date = value instanceof Date ? value : new Date(value);
-    return date.toLocaleDateString("vi-VN");
-  };
+  const roles = data?.data?.data || [];
 
   const handleDelete = async (id: string) => {
-    const confirmed = window.confirm("Bạn chắc chắn muốn xóa người dùng này?");
+    const confirmed = window.confirm("Bạn chắc chắn muốn xóa vai trò này?");
     if (!confirmed) return;
     setDeletingId(id);
     try {
-      await deleteUser(id);
+      await deleteRole(id);
     } finally {
       setDeletingId(null);
     }
@@ -42,17 +36,17 @@ const UserPageComponent = () => {
     );
   }
 
-  if (!users.length) {
-    return <p className="text-center text-gray-500">Không có user nào.</p>;
+  if (!roles.length) {
+    return <p className="text-center text-gray-500">Không có role nào.</p>;
   }
 
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-semibold">Danh sách người dùng</h1>
-        <ComponentWithPermissionGuard permission={PERMISSIONS.USERS.CREATE}>
-          <Button onClick={() => navigate(ROUTES.USER_CREATE.url)}>
-            <Plus className="w-4 h-4 mr-2" /> Thêm người dùng
+        <h1 className="text-xl font-semibold">Danh sách vai trò</h1>
+        <ComponentWithPermissionGuard permission={PERMISSIONS.ROLES.CREATE}>
+          <Button onClick={() => navigate(ROUTES.ROLE_CREATE.url)}>
+            <Plus className="w-4 h-4 mr-2" /> Thêm vai trò
           </Button>
         </ComponentWithPermissionGuard>
       </div>
@@ -62,73 +56,67 @@ const UserPageComponent = () => {
           <thead className="bg-gray-50 text-left">
             <tr>
               <th className="p-2 border text-center">#</th>
-              <th className="p-2 border text-center">Username</th>
-              <th className="p-2 border text-center">Họ tên</th>
-              <th className="p-2 border text-center">Giới tính</th>
-              <th className="p-2 border text-center">Email</th>
-              <th className="p-2 border text-center">SĐT</th>
-              <th className="p-2 border text-center">Vai trò</th>
-              <th className="p-2 border text-center">Ngày tạo</th>
-              <th className="p-2 border text-center">Hành động</th>
+              <th className="p-2 border text-center">Tên vai trò</th>
+              <th className="p-2 border text-center">Mô tả</th>
+              <th className="p-2 border text-center">Trạng thái</th>
+              <th className="p-2 border text-center">Loại</th>
             </tr>
           </thead>
 
           <tbody className="[&>tr>td]:align-middle">
-            {users.map((user, idx) => (
-              <tr key={user.id} className="hover:bg-gray-50">
+            {roles.map((role, idx) => (
+              <tr key={role.id} className="hover:bg-gray-50">
                 <td className="p-2 border w-12 text-center">{idx + 1}</td>
-                <td className="p-2 border">{user.username}</td>
-                <td className="p-2 border">{user.fullName}</td>
-                <td className="p-2 border text-center">
-                  {user.gender === "MALE" ? "Nam" : "Nữ"}
-                </td>{" "}
-                <td className="p-2 border">{user.email || "-"}</td>
-                <td className="p-2 border">{user.phone || "-"}</td>
+                <td className="p-2 border">{role.name}</td>
+                <td className="p-2 border">{role.description || "-"}</td>
                 <td className="p-2 border">
-                  {user.roles.map((r) => r.name).join(", ") || "-"}
+                  {role.isActive ? "Đang hoạt động" : "Không hoạt động"}
                 </td>
-                <td className="p-2 border">{formatDate(user.createdAt)}</td>
+                <td className="p-2 border">
+                  {role.isSystemRole ? "Hệ thống" : "Tùy chỉnh"}
+                </td>
                 <td className="p-2 border">
                   <div className="flex items-center gap-2 justify-center">
                     <ComponentWithPermissionGuard
-                      permission={PERMISSIONS.USERS.VIEW}
+                      permission={PERMISSIONS.ROLES.VIEW}
                     >
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() =>
-                          navigate(ROUTES.USER_VIEW.getPath(user.id))
+                          navigate(ROUTES.ROLE_VIEW.getPath(role.id))
                         }
                       >
                         <Eye className="w-4 h-4" />
                       </Button>
                     </ComponentWithPermissionGuard>
-                    {!user.roles.some((role) => role.name === "admin") && (
+                    {!role.isSystemRole && (
                       <>
                         <ComponentWithPermissionGuard
-                          permission={PERMISSIONS.USERS.UPDATE}
+                          permission={PERMISSIONS.ROLES.UPDATE}
                         >
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() =>
-                              navigate(ROUTES.USER_EDIT.getPath(user.id))
+                              navigate(ROUTES.ROLE_EDIT.getPath(role.id))
                             }
                           >
                             <Pencil className="w-4 h-4" />
                           </Button>
                         </ComponentWithPermissionGuard>
+
                         <ComponentWithPermissionGuard
-                          permission={PERMISSIONS.USERS.DELETE}
+                          permission={PERMISSIONS.ROLES.DELETE}
                         >
                           <Button
                             variant="ghost"
                             size="sm"
                             className="text-red-600 hover:text-red-700"
-                            disabled={deletingId === user.id}
-                            onClick={() => handleDelete(user.id)}
+                            disabled={deletingId === role.id}
+                            onClick={() => handleDelete(role.id)}
                           >
-                            {deletingId === user.id ? (
+                            {deletingId === role.id ? (
                               <Loader2 className="w-4 h-4 animate-spin" />
                             ) : (
                               <Trash className="w-4 h-4" />
@@ -148,7 +136,7 @@ const UserPageComponent = () => {
   );
 };
 
-export const UserPage = withPermissionGuard(
-  UserPageComponent,
-  PERMISSIONS.USERS.LIST
+export const RolePage = withPermissionGuard(
+  RolePageComponent,
+  PERMISSIONS.ROLES.LIST
 );

@@ -34,6 +34,11 @@ const ROUTES = {
     title: 'Vai trò',
     url: '/roles'
   },
+  ROLE_VIEW: {
+    title: 'Xem vai trò',
+    url: '/roles/:id/view',
+    getPath: (id: string) => `/roles/${id}/view`
+  },
   ROLE_EDIT: {
     title: 'Sửa vai trò',
     url: '/roles/:id/edit',

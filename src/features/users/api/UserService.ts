@@ -33,16 +33,18 @@ export const useCreateUserMutation = () => {
     },
 
     // chạy khi API tạo thành công
-    onSuccess: () => {
+    onSuccess: async () => {
       // bắt react query refeth lại danh sách users
       // giúp UI luôn có dữ liệu mới nhất 
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['users']
       })
+      // Refetch to ensure fresh data
+      await queryClient.refetchQueries({ queryKey: ['users'] })
       toast.success("Thêm người dùng thành công")
     },
     onError: (error: any) => {
-      toast.error(error.message || "Thên người dùng thất bại")
+      toast.error(error.message || "Thêm người dùng thất bại")
     }
   })
 }
@@ -67,11 +69,14 @@ export const useUpdateUserMutation = (id: String | undefined
       return api.patch<UsersResponse>(`${API_ROUTES.USERS}/${id}`, data)
     },
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ['users']
       })
-      queryClient.invalidateQueries({queryKey: ['user', id]})
+      await queryClient.invalidateQueries({ queryKey: ['user', id] })
+      await queryClient.invalidateQueries({ queryKey: ['users', id] })
+      // Refetch to ensure fresh data
+      await queryClient.refetchQueries({ queryKey: ['users'] })
       toast.success("Cập nhật người dùng thành công")
     },
     onError: (error: any) => {
