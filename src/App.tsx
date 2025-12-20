@@ -17,6 +17,8 @@ import { RoleEditPage } from "./features/roles/pages/RoleEditPage";
 import { UserEditPage } from "./features/users/page/UserEditPage";
 import { UserCreatePage } from "./features/users/page/UserCreatePage";
 import { RoleCreatePage } from "./features/roles/pages/RoleCreatePage";
+import { OverviewPage } from "./features/overview/pages/OverviewPage";
+import { RoomDetailPage } from "./features/rooms/pages/RoomDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -67,7 +69,15 @@ const router = createBrowserRouter([
           // {
           //   path: ROUTES.AUDIT_LOGS.url,
           //   element: <AuditLogsPage />
-          // }
+          // },
+          {
+            path: ROUTES.OVERVIEW.url,
+            element: <OverviewPage />
+          },
+          {
+            path: ROUTES.ROOM_DETAIL.url,
+            element: <RoomDetailPage />
+          }
         ]
       }
     ]

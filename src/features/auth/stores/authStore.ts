@@ -8,6 +8,7 @@
 import { decodeToken } from '@/shared/lib/jwt'
 import ROUTES from '@/shared/lib/routes'
 import { useSocketStore } from '@/shared/stores/useSocketStore'
+// import { useSmartHomeSocketStore } from '@/features/smart-home/stores/useSmartHomeSocketStore' // Tạm thời tắt Socket.IO
 import type { LoginResponse } from '@/shared/validations/AuthSchema'
 import { create } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware'
@@ -59,13 +60,17 @@ const useAuthStore = create<AuthState>()(
 
           // Kết nối socket ngay sau khi login
           // truyền accessToken vào socket để xác thực
-          const { connect } = useSocketStore.getState()
-          connect(token.accessToken)
+          const { connect: connectBackup } = useSocketStore.getState()
+          // const { connect: connectSmartHome } = useSmartHomeSocketStore.getState() // Tạm thời tắt
+          connectBackup(token.accessToken)
+          // connectSmartHome(token.accessToken) // Tạm thời tắt Socket.IO
         },
         logout: () => {
           // ngắt kết nối socket 
-          const { disconnect } = useSocketStore.getState()
-          disconnect()
+          const { disconnect: disconnectBackup } = useSocketStore.getState()
+          // const { disconnect: disconnectSmartHome } = useSmartHomeSocketStore.getState() // Tạm thời tắt
+          disconnectBackup()
+          // disconnectSmartHome() // Tạm thời tắt Socket.IO
 
           // xóa toàn bộ thông tin dữ liệu đăng nhập
           // và nhờ persist tất cả được xóa khỏi localStorage

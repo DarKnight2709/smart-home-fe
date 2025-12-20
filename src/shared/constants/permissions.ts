@@ -26,4 +26,16 @@ export const PERMISSIONS = {
     MODULES: { method: 'GET', path: '/permissions/module/:module' } as PermissionRequirement,
     UPDATE: { method: 'PATCH', path: '/permissions/:id' } as PermissionRequirement
   },
+
+
+  // Overview
+  OVERVIEW: {
+    method: 'GET', path: '/overview'
+  } as PermissionRequirement,
+
+
+  // Room
+  // ROOMS: {
+  //   LIST: 
+  // }
 }

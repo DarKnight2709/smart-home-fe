@@ -1,5 +1,5 @@
 import {
-  Users,
+  Users, CircleGauge, House  
 } from 'lucide-react'
 import { PERMISSIONS } from '../constants/permissions'
 import ROUTES from './routes'
@@ -54,6 +54,30 @@ const navMain: NavItem[] = [
       },
     ]
   },
+  {
+    title: ROUTES.OVERVIEW.title,
+    url: ROUTES.OVERVIEW.url,
+    icon: CircleGauge,
+    isActive: true,
+    requiredPermission: PERMISSIONS.OVERVIEW
+  },
+  {
+    title: "Các phòng",
+    url: "#",
+    icon: House,
+    isActive: true,
+    items: [
+      {
+        title: ROUTES.LIVING_ROOM.title,
+        url: ROUTES.LIVING_ROOM.url,
+      },
+      {
+        title: ROUTES.BED_ROOM.title,
+        url: ROUTES.BED_ROOM.url
+      }
+
+    ]
+  }
 ]
 
 export default navMain

@@ -1,0 +1,110 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
+import { Badge } from "@/shared/components/ui/badge"
+import { Lightbulb, Thermometer, Droplets, AlertTriangle, ArrowRight } from "lucide-react"
+import { type Room } from "../api/OverviewService"
+import { useNavigate } from "react-router"
+import ROUTES from "@/shared/lib/routes"
+
+interface RoomListProps {
+  rooms: Room[]
+}
+
+export const RoomList = ({ rooms }: RoomListProps) => {
+  const navigate = useNavigate()
+
+  if (rooms.length === 0) {
+    return (
+      <Card>
+        <CardContent className="pt-6">
+          <p className="text-center text-muted-foreground">Chưa có phòng nào</p>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  const getRoomName = (location: string) => {
+    if (location === 'living-room') return 'Phòng khách'
+    if (location === 'bedroom') return 'Phòng ngủ'
+    if (location === 'kitchen') return 'Nhà bếp'
+    if (location === 'bathroom') return 'Phòng tắm'
+    return location || 'Chưa xác định'
+  }
+
+  return (
+    <div className="space-y-4">
+      <h2 className="text-xl font-semibold">Danh sách phòng</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {rooms.map((room) => (
+          <Card 
+            key={room.location} 
+            className={`cursor-pointer hover:shadow-lg transition-shadow ${room.hasWarning ? "border-orange-200 dark:border-orange-800" : ""}`}
+            onClick={() => navigate(ROUTES.ROOM_DETAIL.getPath(room.location))}
+          >
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg">
+                  {getRoomName(room.location)}
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  {room.hasWarning && (
+                    <Badge variant="destructive" className="flex items-center gap-1">
+                      <AlertTriangle className="w-3 h-3" />
+                      Cảnh báo
+                    </Badge>
+                  )}
+                  <ArrowRight className="w-4 h-4 text-muted-foreground" />
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {/* Đèn */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Lightbulb className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">Đèn</span>
+                  </div>
+                  <span className="text-sm font-medium">
+                    {room.lightsOn} / {room.lightsTotal}
+                  </span>
+                </div>
+
+                {/* Nhiệt độ */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Thermometer className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">Nhiệt độ</span>
+                  </div>
+                  <span className="text-sm font-medium">
+                    {room.temperature !== undefined ? `${room.temperature}°C` : '--'}
+                  </span>
+                </div>
+
+                {/* Độ ẩm */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Droplets className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">Độ ẩm</span>
+                  </div>
+                  <span className="text-sm font-medium">
+                    {room.humidity !== undefined ? `${room.humidity}%` : '--'}
+                  </span>
+                </div>
+
+                {/* Cảnh báo */}
+                {room.hasWarning && room.warningMessage && (
+                  <div className="mt-3 p-2 rounded-md bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800">
+                    <p className="text-xs text-orange-800 dark:text-orange-200">
+                      {room.warningMessage}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  )
+}
+

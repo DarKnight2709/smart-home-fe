@@ -1,4 +1,5 @@
 import { useMeQuery } from '@/features/auth/api/AuthService'
+// import { useSmartHomeSocket } from '@/features/smart-home/hooks/useSmartHomeSocket' // Tạm thời tắt Socket.IO
 // import { useBackupSocket } from '@/features/backups/hooks/useBackupSocket'
 import { Link, Outlet, useLocation } from 'react-router'
 import { AppSidebar } from '../components/AppSidebar'
@@ -22,6 +23,8 @@ export default function LayoutMain() {
   const currentRoute = Object.values(ROUTES).find((route) => route.url === pathname)?.title
   // Initialize socket listeners for backup events
   // useBackupSocket()
+  // Initialize socket listeners for smart home events
+  // useSmartHomeSocket() // Tạm thời tắt Socket.IO, dùng polling
   const { isLoading, isPending } = useMeQuery()
 
   if (isLoading || isPending) {

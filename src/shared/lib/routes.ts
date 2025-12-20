@@ -1,3 +1,4 @@
+import { url } from "zod"
 
 const ROUTES = {
   HOME: {
@@ -52,6 +53,24 @@ const ROUTES = {
     title: 'Lịch sử hoạt động',
     url: '/audit-logs'
   },
+  OVERVIEW: {
+    title: 'Trang tổng quát',
+    url: '/overview'
+  },
+  ROOM_DETAIL: {
+    title: 'Chi tiết phòng',
+    url: '/rooms/:location',
+    getPath: (location: string) => `/rooms/${location}`
+  },
+  LIVING_ROOM: {
+    title: 'Phòng khách',
+    url: '/rooms/living-room',
+  },
+  BED_ROOM: {
+    title: 'Phòng ngủ',
+    url: '/rooms/bed-room',
+  }
+
 }
 
 export default ROUTES
