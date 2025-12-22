@@ -2,13 +2,27 @@ import { queryClient } from "@/shared/components/ReactQueryProvider"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { toast } from "sonner"
 import api from "@/shared/lib/api"
+import type { Location } from "@/shared/enums/location.enum"
+import type { DeviceStatus } from "@/shared/enums/device.enum"
 
 // Types
 export interface QuickStatus {
   lightsOn: number
+  lightsTotal: number
   devicesOnline: number
   devicesTotal: number
   doorsOpen: number
+  doorsTotal: number
+}
+
+export interface Room {
+  location: Location
+  hasWarning: boolean
+  warningMessage: string
+  temperature?: number
+  humidity?: number
+  gasLevel?: number
+  lightLevel?: number
 }
 
 
@@ -18,12 +32,13 @@ export interface DeviceOverview {
   type: string;
   location: string;
   lastState: string;
-  status: 'online' | 'offline';
+  status: DeviceStatus;
 }
 
 export interface OverviewData {
   quickStatus: QuickStatus;
   devices: DeviceOverview[];
+  rooms: Room[];
 }
 
 // API Hooks
@@ -35,6 +50,7 @@ export const useGetOverviewQuery = () => {
       return res.data;
     },
     refetchInterval: 30000,
+    refetchOnWindowFocus: true
   });
 }
 

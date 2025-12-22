@@ -17,7 +17,7 @@ interface SocketState {
   isConnected: boolean
   isConnecting: boolean  // đang trong qtr kết nối (để tránh gọi nhiều lần).
   error: string | null
-  connect: (token: string) => void  // connect, disconnect, setter thủ công
+  connect: () => void  // connect, disconnect, setter thủ công
   disconnect: () => void
   setConnected: (connected: boolean) => void
   setError: (error: string | null) => void
@@ -33,7 +33,7 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
   isConnecting: false,
   error: null,
 
-  connect: (token: string) => {
+  connect: () => {
     const { socket, isConnected } = get()
 
     // nếu đã kết nối rồi -> không làm gì
@@ -51,10 +51,10 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
 
     try {
       // tạo socket instance
-      const newSocket = io(`${envConfig.VITE_SOCKET_URL}/backup`, {
-        auth: { token }, // Gửi token để server xác thực
-        path: '/ws/socket.io', // Đường dẫn socket (thường dùng khi có reverse proxy)
-        transports: ['websocket'], // chỉ dùng websocket (không fallback polling)
+      const newSocket = io(`${envConfig.VITE_SOCKET_URL}`, {
+        // auth: { token }, // Gửi token để server xác thực
+        // path: '/ws/socket.io', // Đường dẫn socket (thường dùng khi có reverse proxy)
+        // transports: ['websocket'], // chỉ dùng websocket (không fallback polling)
         autoConnect: true,
         reconnection: true,
         reconnectionAttempts: 5,

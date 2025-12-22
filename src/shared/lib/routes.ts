@@ -68,7 +68,7 @@ const ROUTES = {
   },
   BED_ROOM: {
     title: 'Phòng ngủ',
-    url: '/rooms/bed-room',
+    url: '/rooms/bedroom',
   }
 
 }

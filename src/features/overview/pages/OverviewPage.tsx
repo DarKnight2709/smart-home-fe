@@ -6,10 +6,23 @@ import  QuickActions  from "../components/QuickActions"
 import { Home, Loader2, RefreshCw } from "lucide-react"
 import { Card, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { Button } from "@/shared/components/ui/button"
+import { RoomList } from "../components/RoomList"
+import { useOverviewRealtime } from "../hooks/useRooms"
+
 
 export const OverviewPage = () => {
+
+  useOverviewRealtime();
+  // useEffect(() => {
+  //   if (data?.rooms?.length ) {
+  //     setRooms([...data.rooms]); 
+  //   }
+  // }, [data, setRooms]);
   const { data, isLoading, isFetching, refetch } = useGetOverviewQuery()
-  console.log('Overview data:', data)
+
+  
+
+
 
   if (isLoading || isFetching) {
     return (
@@ -57,7 +70,7 @@ export const OverviewPage = () => {
       <QuickActions />
 
       {/* Danh sách thiết bị hoặc phòng: có thể custom thêm nếu muốn */}
-      {/* <RoomList rooms={data.rooms} /> */}
+      <RoomList rooms={data.rooms} />
     </div>
   )
 }

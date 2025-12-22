@@ -60,16 +60,16 @@ const useAuthStore = create<AuthState>()(
 
           // Kết nối socket ngay sau khi login
           // truyền accessToken vào socket để xác thực
-          const { connect: connectBackup } = useSocketStore.getState()
+          const { connect } = useSocketStore.getState()
           // const { connect: connectSmartHome } = useSmartHomeSocketStore.getState() // Tạm thời tắt
-          connectBackup(token.accessToken)
+          connect()
           // connectSmartHome(token.accessToken) // Tạm thời tắt Socket.IO
         },
         logout: () => {
           // ngắt kết nối socket 
-          const { disconnect: disconnectBackup } = useSocketStore.getState()
+          const { disconnect } = useSocketStore.getState()
           // const { disconnect: disconnectSmartHome } = useSmartHomeSocketStore.getState() // Tạm thời tắt
-          disconnectBackup()
+          disconnect()
           // disconnectSmartHome() // Tạm thời tắt Socket.IO
 
           // xóa toàn bộ thông tin dữ liệu đăng nhập

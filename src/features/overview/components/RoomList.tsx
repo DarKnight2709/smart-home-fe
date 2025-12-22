@@ -1,16 +1,31 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { Badge } from "@/shared/components/ui/badge"
-import { Lightbulb, Thermometer, Droplets, AlertTriangle, ArrowRight } from "lucide-react"
-import { type Room } from "../api/OverviewService"
-import { useNavigate } from "react-router"
-import ROUTES from "@/shared/lib/routes"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
+import { Badge } from "@/shared/components/ui/badge";
+import {
+  Lightbulb,
+  Thermometer,
+  Droplets,
+  AlertTriangle,
+  ArrowRight,
+  Sun,
+  Flame,
+} from "lucide-react";
+import { type Room } from "../api/OverviewService";
+import { useNavigate } from "react-router";
+import ROUTES from "@/shared/lib/routes";
 
 interface RoomListProps {
-  rooms: Room[]
+  rooms: Room[];
 }
 
 export const RoomList = ({ rooms }: RoomListProps) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  console.log("Rendering RoomList with rooms:", rooms);
+  
 
   if (rooms.length === 0) {
     return (
@@ -19,25 +34,27 @@ export const RoomList = ({ rooms }: RoomListProps) => {
           <p className="text-center text-muted-foreground">Chưa có phòng nào</p>
         </CardContent>
       </Card>
-    )
+    );
   }
 
   const getRoomName = (location: string) => {
-    if (location === 'living-room') return 'Phòng khách'
-    if (location === 'bedroom') return 'Phòng ngủ'
-    if (location === 'kitchen') return 'Nhà bếp'
-    if (location === 'bathroom') return 'Phòng tắm'
-    return location || 'Chưa xác định'
-  }
+    if (location === "living-room") return "Phòng khách";
+    if (location === "bedroom") return "Phòng ngủ";
+    if (location === "kitchen") return "Nhà bếp";
+    if (location === "bathroom") return "Phòng tắm";
+    return location || "Chưa xác định";
+  };
 
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Danh sách phòng</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {rooms.map((room) => (
-          <Card 
-            key={room.location} 
-            className={`cursor-pointer hover:shadow-lg transition-shadow ${room.hasWarning ? "border-orange-200 dark:border-orange-800" : ""}`}
+          <Card
+            key={room.location}
+            className={`cursor-pointer hover:shadow-lg transition-shadow ${
+              room.hasWarning ? "border-orange-200 dark:border-orange-800" : ""
+            }`}
             onClick={() => navigate(ROUTES.ROOM_DETAIL.getPath(room.location))}
           >
             <CardHeader>
@@ -47,7 +64,10 @@ export const RoomList = ({ rooms }: RoomListProps) => {
                 </CardTitle>
                 <div className="flex items-center gap-2">
                   {room.hasWarning && (
-                    <Badge variant="destructive" className="flex items-center gap-1">
+                    <Badge
+                      variant="destructive"
+                      className="flex items-center gap-1"
+                    >
                       <AlertTriangle className="w-3 h-3" />
                       Cảnh báo
                     </Badge>
@@ -58,25 +78,18 @@ export const RoomList = ({ rooms }: RoomListProps) => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {/* Đèn */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Lightbulb className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">Đèn</span>
-                  </div>
-                  <span className="text-sm font-medium">
-                    {room.lightsOn} / {room.lightsTotal}
-                  </span>
-                </div>
-
                 {/* Nhiệt độ */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Thermometer className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">Nhiệt độ</span>
+                    <span className="text-sm text-muted-foreground">
+                      Nhiệt độ
+                    </span>
                   </div>
                   <span className="text-sm font-medium">
-                    {room.temperature !== undefined ? `${room.temperature}°C` : '--'}
+                    {room.temperature !== undefined
+                      ? `${room.temperature}°C`
+                      : "--"}
                   </span>
                 </div>
 
@@ -87,9 +100,34 @@ export const RoomList = ({ rooms }: RoomListProps) => {
                     <span className="text-sm text-muted-foreground">Độ ẩm</span>
                   </div>
                   <span className="text-sm font-medium">
-                    {room.humidity !== undefined ? `${room.humidity}%` : '--'}
+                    {room.humidity !== undefined ? `${room.humidity}%` : "--"}
                   </span>
                 </div>
+                {/* Ánh sáng */}
+                {room.lightLevel && (
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Sun className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">
+                        Ánh sáng
+                      </span>
+                    </div>
+                    <span className="text-sm font-medium">
+                      {room.lightLevel}
+                    </span>
+                  </div>
+                )}
+
+                {/* Gas */}
+                {room.gasLevel && (
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Flame className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">Gas</span>
+                    </div>
+                    <span className="text-sm font-medium">{room.gasLevel}</span>
+                  </div>
+                )}
 
                 {/* Cảnh báo */}
                 {room.hasWarning && room.warningMessage && (
@@ -105,6 +143,5 @@ export const RoomList = ({ rooms }: RoomListProps) => {
         ))}
       </div>
     </div>
-  )
-}
-
+  );
+};

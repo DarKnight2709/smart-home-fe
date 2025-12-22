@@ -1,13 +1,20 @@
-import { Card, CardContent } from "@/shared/components/ui/card"
-import { Lightbulb, Plug, DoorOpen } from "lucide-react"
-import { type QuickStatus } from "../api/OverviewService"
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Lightbulb, Plug, DoorOpen } from "lucide-react";
+import { type QuickStatus } from "../api/OverviewService";
 
 interface QuickStatusCardsProps {
-  quickStatus: QuickStatus
+  quickStatus: QuickStatus;
 }
 
 export const QuickStatusCards = ({ quickStatus }: QuickStatusCardsProps) => {
-  const { lightsOn, devicesOnline, devicesTotal, doorsOpen } = quickStatus
+  const {
+    lightsOn,
+    lightsTotal,
+    devicesOnline,
+    devicesTotal,
+    doorsOpen,
+    doorsTotal,
+  } = quickStatus;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -20,7 +27,7 @@ export const QuickStatusCards = ({ quickStatus }: QuickStatusCardsProps) => {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Đèn đang bật</p>
-              <p className="text-2xl font-bold">{lightsOn}</p>
+              <p className="text-2xl font-bold">{lightsOn} / {lightsTotal}</p>
             </div>
           </div>
         </CardContent>
@@ -52,12 +59,11 @@ export const QuickStatusCards = ({ quickStatus }: QuickStatusCardsProps) => {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Cửa đang mở</p>
-              <p className="text-2xl font-bold">{doorsOpen}</p>
+              <p className="text-2xl font-bold">{doorsOpen} / {doorsTotal}</p>  
             </div>
           </div>
         </CardContent>
       </Card>
     </div>
-  )
-}
-
+  );
+};
