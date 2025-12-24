@@ -21,6 +21,7 @@ import { OverviewPage } from "./features/overview/pages/OverviewPage";
 import { RoomDetailPage } from "./features/rooms/pages/RoomDetailPage";
 import { SettingPage } from "./features/setting/pages/SettingPage";
 import { PermissionsPage } from "./features/permissions/pages/PermissionsPage";
+import ProfilePage from "./features/auth/pages/ProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
           {
             path: ROUTES.SETTING.url,
             element: <SettingPage />          
+          },
+          {
+            path: ROUTES.PROFILE.url,
+            element: <ProfilePage />
           }
         ]
       }

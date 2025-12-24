@@ -73,6 +73,10 @@ const ROUTES = {
   SETTING: {
     title: "Cài đặt",
     url: '/settings'
+  },
+  PROFILE: {
+    title: "Hồ sơ cá nhân",
+    url: '/profile'
   }
 
 }

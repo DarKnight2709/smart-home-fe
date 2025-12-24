@@ -4,6 +4,9 @@ import {
   type LoginResponse,
   type LoginBodyType,
   type MeResponse,
+  type UpdatePersonalInfoBodyType,
+  type ChangePasswordBodyType,
+  type UpdateProfileResponse,
 } from '@/shared/validations/AuthSchema'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import useAuthStore from '../stores/authStore'
@@ -54,6 +57,33 @@ export const useLogoutMutation = () => {
       logout()
       queryClient.clear()
       toast.error(error.message || 'Đăng xuất thất bại.')
+    }
+  })
+}
+
+export const useUpdatePersonalInfoMutation = () => {
+  return useMutation({
+    mutationFn: (body: UpdatePersonalInfoBodyType) => 
+      api.patch<UpdateProfileResponse>(API_ROUTES.AUTH.UPDATE_PROFILE, body),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['me'] })
+      toast.success(data.data.message || 'Cập nhật thông tin cá nhân thành công.')
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || error.message || 'Cập nhật thông tin thất bại.')
+    }
+  })
+}
+
+export const useChangePasswordMutation = () => {
+  return useMutation({
+    mutationFn: (body: ChangePasswordBodyType) => 
+      api.patch<UpdateProfileResponse>(API_ROUTES.AUTH.CHANGE_PASSWORD, body),
+    onSuccess: (data) => {
+      toast.success(data.data.message || 'Đổi mật khẩu thành công.')
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || error.message || 'Đổi mật khẩu thất bại.')
     }
   })
 }

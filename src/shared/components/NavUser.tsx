@@ -1,6 +1,7 @@
 "use client";
 
-import { ChevronsUpDown, LockIcon, LogOut, UserIcon } from "lucide-react";
+import { ChevronsUpDown, LogOut, UserIcon } from "lucide-react";
+import { Link } from "react-router";
 
 // import LogoutWrapper from '@/features/auth/components/ButtonLogout'
 import {
@@ -24,6 +25,7 @@ import {
 } from "@/shared/components/ui/sidebar";
 import type { MeResponse } from "../validations/AuthSchema";
 import LogoutWrapper from "@/features/auth/components/ButtonLogout";
+import ROUTES from "@/shared/lib/routes";
 
 export function NavUser({ user }: { user?: MeResponse }) {
   const { isMobile } = useSidebar();
@@ -65,13 +67,11 @@ export function NavUser({ user }: { user?: MeResponse }) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <UserIcon />
-              Thông tin cá nhân
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <LockIcon />
-              Đổi mật khẩu
+            <DropdownMenuItem asChild>
+              <Link to={ROUTES.PROFILE.url} className="flex items-center gap-2 cursor-pointer">
+                <UserIcon />
+                Thông tin cá nhân
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <LogoutWrapper>
