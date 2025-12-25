@@ -11,7 +11,6 @@ import {
   AlertTriangle,
   ArrowRight,
   Sun,
-  Flame,
 } from "lucide-react";
 import { type Room } from "../api/OverviewService";
 import { useNavigate } from "react-router";
