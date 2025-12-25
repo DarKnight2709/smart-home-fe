@@ -71,6 +71,10 @@ export const PERMISSIONS = {
         method: "GET",
         path: "/living-room/details",
       } as PermissionRequirement,
+      DOOR_PASSWORD: {
+        method: "PATCH",
+        path: "/living-room/door/change-password",
+      } as PermissionRequirement,
     },
     BEDROOM: {
       LIGHT: {
@@ -84,6 +88,24 @@ export const PERMISSIONS = {
       DETAILS: {
         method: "GET",
         path: "/bedroom/details",
+      } as PermissionRequirement,
+      DOOR_PASSWORD: {
+        method: "PATCH",
+        path: "/bedroom/door/change-password",
+      } as PermissionRequirement,
+    },
+    KITCHEN: {
+      LIGHT: {
+        method: "PATCH",
+        path: "/kitchen/light",
+      } as PermissionRequirement,
+      DOOR: {
+        method: "PATCH",
+        path: "/kitchen/door",
+      } as PermissionRequirement,
+      DETAILS: {
+        method: "GET",
+        path: "/kitchen/details",
       } as PermissionRequirement,
     },
   },

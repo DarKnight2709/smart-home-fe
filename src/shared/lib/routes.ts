@@ -65,6 +65,10 @@ const ROUTES = {
     title: 'Phòng khách',
     url: '/rooms/living-room',
   },
+  KITCHEN: {
+    title: 'Nhà bếp',
+    url: '/rooms/kitchen',
+  },
   BED_ROOM: {
     title: 'Phòng ngủ',
     url: '/rooms/bedroom',

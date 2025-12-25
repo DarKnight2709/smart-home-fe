@@ -5,6 +5,7 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { Badge } from "@/shared/components/ui/badge";
+import { useState } from "react";
 import {
   Plug,
   CheckCircle2,
@@ -12,16 +13,18 @@ import {
   DoorOpen,
   DoorClosed,
   Power,
+  Key,
 } from "lucide-react";
 import {
   useCloseDoor,
   useTurnOffLight,
+  useChangeDoorPassword,
   type RoomDevice,
 } from "../api/RoomService";
 import { DeviceType } from "@/shared/enums/device.enum";
 import { Button } from "@/shared/components/ui/button";
 import { ComponentWithPermissionGuard } from "@/shared/components/ComponentWithPermissionGuard";
-
+import { ChangeDoorPasswordDialog } from "./ChangeDoorPasswordDialog";
 
 interface DeviceListProps {
   devices: RoomDevice[];
@@ -34,6 +37,9 @@ export const DeviceList = ({ devices, room, permission }: DeviceListProps) => {
     useTurnOffLight(room);
   const { mutateAsync: closeDoor, isPending: isClosingDoor } =
     useCloseDoor(room);
+  const { mutateAsync: changeDoorPassword, isPending: isChangingPassword } =
+    useChangeDoorPassword(room);
+  const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
   const devicesList = devices.map((device) => {
     if (device.type === DeviceType.DOOR || device.type === DeviceType.LIGHT) {
       return {
@@ -60,6 +66,14 @@ export const DeviceList = ({ devices, room, permission }: DeviceListProps) => {
     closeDoor({
       open,
     });
+  };
+
+  const handleChangePassword = async (
+    oldPassword: string,
+    newPassword: string
+  ) => {
+    await changeDoorPassword({ oldPassword, newPassword });
+    setPasswordDialogOpen(false);
   };
 
   if (devicesList.length === 0) {
@@ -119,12 +133,6 @@ export const DeviceList = ({ devices, room, permission }: DeviceListProps) => {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Badge
-                  variant={device.status === "online" ? "default" : "secondary"}
-                >
-                  {device.status === "online" ? "Online" : "Offline"}
-                </Badge>
-
                 {/* NÚT ĐIỀU KHIỂN */}
                 {/* LIGHT CONTROL */}
                 {device?.isControllable &&
@@ -150,30 +158,59 @@ export const DeviceList = ({ devices, room, permission }: DeviceListProps) => {
                 {device?.isControllable &&
                   device.status === "online" &&
                   device.type === DeviceType.DOOR && (
-                    <ComponentWithPermissionGuard permission={permission.DOOR}>
-                      <Button
-                        size="sm"
-                        variant="default"
-                        disabled={isClosingDoor}
-                        onClick={() => handleDoorDevice(!device.isOn)}
-                        className={`flex items-center gap-1 ${
-                          isClosingDoor ? "opacity-50" : "cursor-pointer"
-                        }`}
+                    <>
+                      <ComponentWithPermissionGuard
+                        permission={permission.DOOR}
                       >
-                        {device.isOn ? (
-                          <DoorClosed className="w-4 h-4" />
-                        ) : (
-                          <DoorOpen className="w-4 h-4" />
-                        )}
-                        {device.isOn ? "Đóng" : "Mở"}
-                      </Button>
-                    </ComponentWithPermissionGuard>
+                        <Button
+                          size="sm"
+                          variant="default"
+                          disabled={isClosingDoor}
+                          onClick={() => handleDoorDevice(!device.isOn)}
+                          className={`flex items-center gap-1 ${
+                            isClosingDoor ? "opacity-50" : "cursor-pointer"
+                          }`}
+                        >
+                          {device.isOn ? (
+                            <DoorClosed className="w-4 h-4" />
+                          ) : (
+                            <DoorOpen className="w-4 h-4" />
+                          )}
+                          {device.isOn ? "Đóng" : "Mở"}
+                        </Button>
+                      </ComponentWithPermissionGuard>
+                      <ComponentWithPermissionGuard
+                        permission={permission.DOOR_PASSWORD}
+                      >
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          disabled={isChangingPassword}
+                          onClick={() => setPasswordDialogOpen(true)}
+                          className="flex items-center gap-1"
+                        >
+                          <Key className="w-4 h-4" />
+                          Mật khẩu
+                        </Button>
+                      </ComponentWithPermissionGuard>
+                    </>
                   )}
+                <Badge
+                  variant={device.status === "online" ? "default" : "secondary"}
+                >
+                  {device.status === "online" ? "Online" : "Offline"}
+                </Badge>
               </div>
             </div>
           ))}
         </div>
       </CardContent>
+      <ChangeDoorPasswordDialog
+        open={passwordDialogOpen}
+        onOpenChange={setPasswordDialogOpen}
+        onSubmit={handleChangePassword}
+        isLoading={isChangingPassword}
+      />
     </Card>
   );
 };

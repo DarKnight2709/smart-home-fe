@@ -116,16 +116,16 @@ export const RoomList = ({ rooms }: RoomListProps) => {
                   </div>
                 )}
 
-                {/* Gas */}
-                {room.gasLevel && (
+                {/* Gas
+                {room.gas && (
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Flame className="w-4 h-4 text-muted-foreground" />
                       <span className="text-sm text-muted-foreground">Gas</span>
                     </div>
-                    <span className="text-sm font-medium">{room.gasLevel}</span>
+                    <span className="text-sm font-medium">{room.gas}</span>
                   </div>
-                )}
+                )} */}
 
                 {/* Cảnh báo */}
                 {room.hasWarning && (
@@ -145,8 +145,18 @@ export const RoomList = ({ rooms }: RoomListProps) => {
                       </div>
                     )}
                     {room.gasWarningMessage && (
-                      <div className="p-2 rounded-md bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800">
-                        <p className="text-xs text-orange-800 dark:text-orange-200">
+                      <div
+                        className="
+      flex items-start gap-2
+      p-3 rounded-md
+      border border-red-500
+      bg-red-50 dark:bg-red-900/20
+      animate-pulse
+    "
+                      >
+                        <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 mt-0.5" />
+
+                        <p className="text-xs font-semibold text-red-700 dark:text-red-200 uppercase tracking-wide">
                           {room.gasWarningMessage}
                         </p>
                       </div>

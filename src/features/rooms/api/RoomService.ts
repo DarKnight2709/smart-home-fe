@@ -17,7 +17,7 @@ export interface RoomDetail {
   devices: RoomDevice[];
   temperature?: number;
   humidity?: number;
-  gasLevel?: number;
+  gas?: boolean;
   lightLevel?: number;
   hasWarning?: string;
   temperatureWarningMessage?: string;
@@ -104,6 +104,35 @@ export const useCloseDoor = (room: string) => {
     },
     onError: (error: any) => {
       toast.error(error?.message || "Không thể cập nhật trạng thái cửa");
+    },
+  });
+};
+
+export const useChangeDoorPassword = (room: string) => {
+  return useMutation({
+    mutationFn: async ({
+      oldPassword,
+      newPassword,
+    }: {
+      oldPassword: string;
+      newPassword: string;
+    }) => {
+      const res = await api.patch(`/v1/${room}/door/change-password`, {
+        oldPassword,
+        newPassword,
+      });
+      return res.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["room-detail", room] });
+      toast.success("Đã đổi mật khẩu cửa thành công");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Không thể đổi mật khẩu cửa"
+      );
     },
   });
 };

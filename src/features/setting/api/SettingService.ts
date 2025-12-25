@@ -11,10 +11,6 @@ interface SettingPayload {
     min: number;
     max: number;
   };
-  gas: {
-    min: number;
-    max: number;
-  };
 }
 
 export const useSaveSettings = () => {

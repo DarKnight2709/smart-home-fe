@@ -20,7 +20,7 @@ export interface Room {
   hasWarning: boolean;
   temperature?: number;
   humidity?: number;
-  gasLevel?: number;
+  gas?: boolean;
   lightLevel?: number;
   temperatureWarningMessage?: string;
   gasWarningMessage?: string;

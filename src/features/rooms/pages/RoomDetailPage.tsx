@@ -19,6 +19,7 @@ import {
   Sun,
   Plug,
   AlertCircle,
+  AlertTriangle,
 } from "lucide-react";
 import { DeviceList } from "../components/DeviceList";
 import ROUTES from "@/shared/lib/routes";
@@ -39,6 +40,7 @@ const getRoomName = (location: string) => {
 const ROOM_PERMISSION_GROUP = {
   "living-room": PERMISSIONS.ROOMS.LIVING_ROOM,
   bedroom: PERMISSIONS.ROOMS.BEDROOM,
+  kitchen: PERMISSIONS.ROOMS.KITCHEN,
 } as const;
 
 export const RoomDetailPage = () => {
@@ -263,26 +265,48 @@ export const RoomDetailPage = () => {
         )}
 
         {/* Gas */}
-        {data.gasLevel && (
-          <Card>
+        {data.gas && (
+          <Card
+            className={`border-2 ${
+              data.gas
+                ? "border-red-500 bg-red-50 animate-pulse"
+                : "border-muted"
+            }`}
+          >
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Flame className="w-5 h-5" />
+                <Flame
+                  className={`w-5 h-5 ${
+                    data.gas
+                      ? "text-red-600 animate-bounce"
+                      : "text-muted-foreground"
+                  }`}
+                />
                 Gas
               </CardTitle>
             </CardHeader>
+
             <CardContent>
-              <div
-                className={`text-3xl font-bold ${
-                  data.gasLevel > 300 ? "text-red-500" : ""
-                }`}
-              >
-                {data.gasLevel}
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">ppm</p>
-              {data.gasWarningMessage && (
-                <p className="text-sm text-red-500 mt-1">
-                  {data.gasWarningMessage}
+              {data.gas ? (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-red-600 font-bold text-2xl">
+                    <AlertTriangle className="w-6 h-6 animate-pulse" />
+                    DANGER
+                  </div>
+
+                  <p className="text-sm text-red-600 uppercase tracking-wide">
+                    Gas leak detected
+                  </p>
+
+                  {data.gasWarningMessage && (
+                    <p className="text-sm text-red-700 font-medium">
+                      {data.gasWarningMessage}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm text-green-600 font-medium">
+                  ✅ No gas detected
                 </p>
               )}
             </CardContent>
@@ -291,7 +315,11 @@ export const RoomDetailPage = () => {
       </div>
 
       {/* Danh sách thiết bị */}
-      <DeviceList devices={data.devices} room={data.location} permission={roomPermissions} />
+      <DeviceList
+        devices={data.devices}
+        room={data.location}
+        permission={roomPermissions}
+      />
 
       {/* Điều khiển thiết bị */}
       {/* <DeviceControl devices={data.devices} /> */}

@@ -71,6 +71,11 @@ const navMain: NavItem[] = [
         requiredPermission: PERMISSIONS.ROOMS.LIVING_ROOM.DETAILS
       },
       {
+        title: ROUTES.KITCHEN.title,
+        url: ROUTES.KITCHEN.url,
+        requiredPermission: PERMISSIONS.ROOMS.KITCHEN.DETAILS
+      },
+      {
         title: ROUTES.BED_ROOM.title,
         url: ROUTES.BED_ROOM.url,
         requiredPermission: PERMISSIONS.ROOMS.BEDROOM.DETAILS
